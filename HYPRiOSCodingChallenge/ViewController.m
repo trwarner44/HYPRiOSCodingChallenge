@@ -21,8 +21,11 @@ UIScrollView *scrollView;
 UIStackView *stackView;
 CustomInsetTextField *textField;
 UIButton *button;
+UILabel *currentSchoolTitleLabel;
+UILabel *currentSchoolDescriptionLabel;
 CAGradientLayer *gradientLayer;
 QueryManager *queryManager;
+const CGFloat spacing = 20;
 
 // MARK: - View Life Cycle
 - (void)viewDidLoad {
@@ -30,7 +33,6 @@ QueryManager *queryManager;
     [self initSubviews];
     [self anchorSubviews];
     [self styleSubviews];
-
 }
 
 - (void)viewDidLayoutSubviews {
@@ -45,7 +47,9 @@ QueryManager *queryManager;
     NSString *dbn = [QueryManager dbnFor:intId];
     NSLog(@"dbn: %@", dbn);
     
-    [QueryManager fetchSchool:dbn];
+    [QueryManager fetchSchool:dbn completion:^(NSMutableArray * response) {
+        NSLog(@"response: %@", response);
+    }];
 }
 
 // MARK: - Init Subviews
@@ -53,8 +57,16 @@ QueryManager *queryManager;
     gradientLayer = [CAGradientLayer layer];
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
     textField = [[CustomInsetTextField alloc] initWithFrame:CGRectZero];
-    stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
     button = [[UIButton alloc] initWithFrame:CGRectZero];
+    currentSchoolTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    currentSchoolDescriptionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    NSArray *subviews = @[
+        textField,
+        button,
+        currentSchoolTitleLabel,
+        currentSchoolDescriptionLabel
+    ];
+    stackView = [[UIStackView alloc] initWithArrangedSubviews: subviews];
     queryManager = [[QueryManager alloc] init];
 }
 
@@ -67,17 +79,15 @@ QueryManager *queryManager;
     [scrollView.trailingAnchor constraintEqualToAnchor: self.view.trailingAnchor].active = true;
     [scrollView.bottomAnchor constraintEqualToAnchor: self.view.bottomAnchor].active = true;
 
-    [stackView addArrangedSubview:textField];
-    [stackView addArrangedSubview:button];
-    
     [scrollView addSubview:stackView];
     stackView.translatesAutoresizingMaskIntoConstraints = false;
-    [stackView.widthAnchor constraintEqualToAnchor: self.view.widthAnchor multiplier:0.8].active = true;
-    [stackView.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor].active = true;
-    [stackView.topAnchor constraintEqualToAnchor:scrollView.topAnchor constant:25].active = true;
-    [stackView.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:25].active = true;
+    [stackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:spacing].active = true;
+    [stackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-spacing].active = true;
+    [stackView.topAnchor constraintEqualToAnchor:scrollView.topAnchor constant:spacing].active = true;
+    [stackView.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:spacing].active = true;
     stackView.axis = UILayoutConstraintAxisVertical;
-    stackView.spacing = 16;
+    stackView.spacing = spacing;
+    [stackView setCustomSpacing:spacing/2 afterView:currentSchoolTitleLabel];
     
 
 }
@@ -108,6 +118,11 @@ QueryManager *queryManager;
     button.layer.cornerRadius = 6;
     button.layer.masksToBounds = true;
     [button addTarget:self action:@selector(handleButton) forControlEvents:UIControlEventTouchUpInside];
+    
+    currentSchoolTitleLabel.text = @"Current School";
+    
+    currentSchoolDescriptionLabel.numberOfLines = 0;
+    currentSchoolDescriptionLabel.text = @"None";
 }
 
 - (void)styleGradientLayer {

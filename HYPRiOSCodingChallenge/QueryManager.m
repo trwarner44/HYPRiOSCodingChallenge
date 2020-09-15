@@ -12,7 +12,7 @@
 
 NSString *baseUrl = @"https://data.cityofnewyork.us/resource/s3k6-pzi2.json";
 
-+ (void)fetchSchool:(NSString*)dbn {
++ (void)fetchSchool:(NSString*)dbn completion: (void(^)(NSMutableArray*))callback {
     NSLog(@"fetching school with dbn: %@", dbn);
     NSString *endpoint = [NSString stringWithFormat:@"%@?dbn=%@", baseUrl, dbn];
     
@@ -24,7 +24,8 @@ NSString *baseUrl = @"https://data.cityofnewyork.us/resource/s3k6-pzi2.json";
         if(httpResponse.statusCode == 200) {
             NSError *parseError = nil;
             NSMutableArray<NSDictionary*> *responseArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
-            NSLog(@"Response Array: %@", responseArray);
+//            NSLog(@"Response Array: %@", responseArray);
+            callback(responseArray);
         } else {
             NSLog(@"Error");
         }

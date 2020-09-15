@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QueryManager : NSObject
 
-+ (void)fetchSchool:(NSString*)dbn;
++ (void)fetchSchool:(NSString*)dbn completion: (void(^)(NSMutableArray*))callback;
 +(NSString*)dbnFor:(NSInteger)rowId;
 
 @end
