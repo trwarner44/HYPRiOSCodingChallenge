@@ -51,7 +51,7 @@ NSMutableArray<School*> *cachedSchools;
 - (void)handleButton {
     
     NSString *text = textField.text;
-    NSInteger *intId = [text integerValue];
+    NSInteger intId = [text integerValue];
     NSString *dbn = [QueryManager dbnFor:intId];
     
     if (dbn == nil) {
@@ -63,17 +63,44 @@ NSMutableArray<School*> *cachedSchools;
         [alertVC addAction:okAction];
         [self presentViewController:alertVC animated:YES completion:nil];
     } else {
-        [QueryManager fetchSchool:dbn completion:^(School * school) {
-            NSLog(@"response: %@", school.schoolName);
-            school.schoolId = intId;
-            NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
-            currentSchoolDescriptionLabel.text = labelText;
+        __block NSUInteger cachedSchoolIndex = -1;
+        NSUInteger index = 0;
+        for (School *school in cachedSchools) {
+            if ([school.dbn isEqualToString:dbn]) {
+                cachedSchoolIndex = index;
+                break;
+            }
+            index++;
+        }
+        if (cachedSchoolIndex == -1) {
+            NSLog(@"Fetching school");
+            [QueryManager fetchSchool:dbn completion:^(School* school) {
+                school.schoolId = intId;
+                NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
+                currentSchoolDescriptionLabel.text = labelText;
+                [cachedSchools addObject:school];
+                if (cachedSchools.count > maxCacheSize) {
+                    NSLog(@"dropping %@ from the cache", cachedSchools[0].schoolName);
+                    [cachedSchools removeObjectAtIndex:0];
+                }
+                [self showOrHideCachLabels];
+                [UIView animateWithDuration:0.3 animations:^{
+                    [self.view layoutIfNeeded];
+                }];
+            }];
+        } else {
+            NSLog(@"Using cached school");
+            School *school = cachedSchools[cachedSchoolIndex];
+            [cachedSchools removeObjectAtIndex:cachedSchoolIndex];
             [cachedSchools addObject:school];
             [self showOrHideCachLabels];
             [UIView animateWithDuration:0.3 animations:^{
-                self.view.layoutIfNeeded;
+                [self.view layoutIfNeeded];
             }];
-        }];
+        }
+ 
+        
+
     }
 
 }
@@ -214,7 +241,8 @@ NSMutableArray<School*> *cachedSchools;
     while (currentSchoolIndex < maxCacheSize) {
         CustomInsetLabel *label = cachedSchoolLabels[currentLabelIndex];
         if (currentSchoolIndex < cachedSchools.count) {
-            label.text = cachedSchools[currentSchoolIndex].schoolName;
+            School *school = cachedSchools[currentSchoolIndex];
+            label.text = [NSString stringWithFormat:@"%d: %@", school.schoolId, school.schoolName ];
             [label setHidden:false];
         } else {
             [label setHidden:true];

@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (strong, nonatomic) NSString *dbn;
 @property (strong, nonatomic) NSString *schoolName;
-@property (assign, nullable, nonatomic) NSInteger *schoolId;
+@property (assign, nonatomic) NSInteger *schoolId;
 
 - (instancetype) init: (NSDictionary *)dict;
 

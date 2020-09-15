@@ -14,7 +14,6 @@
 NSString *baseUrl = @"https://data.cityofnewyork.us/resource/s3k6-pzi2.json";
 
 + (void)fetchSchool:(NSString*)dbn completion: (void(^)(School*))callback {
-    NSLog(@"fetching school with dbn: %@", dbn);
     NSString *endpoint = [NSString stringWithFormat:@"%@?dbn=%@", baseUrl, dbn];
     
     NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:endpoint]];

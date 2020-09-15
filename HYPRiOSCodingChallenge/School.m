@@ -16,9 +16,10 @@
     if (self) {
         NSString *dbn = dict[@"dbn"];
         NSString *schoolName = dict[@"school_name"];
+        NSInteger schoolId = 0; //set from VC
         self.dbn = dbn;
         self.schoolName = schoolName;
-        self.schoolId = nil;
+        self.schoolId = &(schoolId);
     }
     return self;
 }
