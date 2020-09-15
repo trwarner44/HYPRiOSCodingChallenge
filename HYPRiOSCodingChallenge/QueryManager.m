@@ -37,7 +37,7 @@ NSString *baseUrl = @"https://data.cityofnewyork.us/resource/s3k6-pzi2.json";
     [dataTask resume];
 }
 
-+(NSString*)dbnFor:(NSInteger)rowId {
++(nullable NSString*)dbnFor:(NSInteger)rowId {
     NSArray *dbns = @[
         @"02M260",
         @"21K728",
@@ -481,9 +481,11 @@ NSString *baseUrl = @"https://data.cityofnewyork.us/resource/s3k6-pzi2.json";
         @"14K477",
     ];
         
-    NSString *dbn = dbns[rowId];
-    
-    return dbn;
+    if (rowId < dbns.count) {
+        return dbns[rowId];
+    } else {
+        return nil;
+    }
 }
 
 

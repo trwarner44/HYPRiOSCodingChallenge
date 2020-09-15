@@ -49,21 +49,33 @@ NSMutableArray<School*> *cachedSchools;
 
 // MARK: - Button Handlers
 - (void)handleButton {
+    
     NSString *text = textField.text;
     NSInteger *intId = [text integerValue];
     NSString *dbn = [QueryManager dbnFor:intId];
     
-    [QueryManager fetchSchool:dbn completion:^(School * school) {
-        NSLog(@"response: %@", school.schoolName);
-        school.schoolId = intId;
-        NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
-        currentSchoolDescriptionLabel.text = labelText;
-        [cachedSchools addObject:school];
-        [self showOrHideCachLabels];
-        [UIView animateWithDuration:0.3 animations:^{
-            self.view.layoutIfNeeded;
+    if (dbn == nil) {
+        UIAlertController* alertVC = [UIAlertController alertControllerWithTitle:@"Too High!"
+                                   message:@"Please input an index lower than 440"
+                                   preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                       handler:^(UIAlertAction * action) {}];
+        [alertVC addAction:okAction];
+        [self presentViewController:alertVC animated:YES completion:nil];
+    } else {
+        [QueryManager fetchSchool:dbn completion:^(School * school) {
+            NSLog(@"response: %@", school.schoolName);
+            school.schoolId = intId;
+            NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
+            currentSchoolDescriptionLabel.text = labelText;
+            [cachedSchools addObject:school];
+            [self showOrHideCachLabels];
+            [UIView animateWithDuration:0.3 animations:^{
+                self.view.layoutIfNeeded;
+            }];
         }];
-    }];
+    }
+
 }
 
 // MARK: - Init Subviews
