@@ -32,6 +32,7 @@ CAGradientLayer *gradientLayer;
 QueryManager *queryManager;
 const CGFloat spacing = 20;
 const int maxCacheSize = 10;
+NSMutableArray<School*> *cachedSchools;
 
 // MARK: - View Life Cycle
 - (void)viewDidLoad {
@@ -57,8 +58,8 @@ const int maxCacheSize = 10;
         school.schoolId = intId;
         NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
         currentSchoolDescriptionLabel.text = labelText;
-        
-        [cachedSchoolLabels.firstObject setHidden: !cachedSchoolLabels.firstObject.isHidden];
+        [cachedSchools addObject:school];
+        [self showOrHideCachLabels];
         [UIView animateWithDuration:0.3 animations:^{
             self.view.layoutIfNeeded;
         }];
@@ -95,6 +96,7 @@ const int maxCacheSize = 10;
     cacheBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     currentSchoolBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
     cacheBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    cachedSchools = [[NSMutableArray alloc] init];
 }
 
 // MARK: - Anchor Subviews
@@ -111,7 +113,7 @@ const int maxCacheSize = 10;
     [stackView.leadingAnchor constraintEqualToAnchor:self.view.leadingAnchor constant:spacing].active = true;
     [stackView.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-spacing].active = true;
     [stackView.topAnchor constraintEqualToAnchor:scrollView.topAnchor constant:spacing].active = true;
-    [stackView.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:spacing].active = true;
+    [stackView.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:-spacing*3].active = true;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.spacing = spacing;
     [stackView setCustomSpacing:spacing/2 afterView:currentSchoolTitleLabel];
@@ -130,6 +132,7 @@ const int maxCacheSize = 10;
     [cacheBackgroundView.leadingAnchor constraintEqualToAnchor:cachedSchoolLabels[0].leadingAnchor].active = true;
     [cacheBackgroundView.trailingAnchor constraintEqualToAnchor:cachedSchoolLabels[0].trailingAnchor].active = true;
     [cacheBackgroundView.bottomAnchor constraintEqualToAnchor:cachedSchoolLabels[maxCacheSize-1].bottomAnchor].active = true;
+    [self showOrHideCachLabels];
 }
 
 // MARK: - StyleSubviews
@@ -186,6 +189,29 @@ const int maxCacheSize = 10;
     }
 }
 
+
+
+// MARK: - Helper Functions
+
+-(void)showOrHideCachLabels {
+    // schools need added to bottom of labels
+    // so we'll iterate forward through the schools but backward
+    // through the labels
+    NSInteger currentSchoolIndex = 0;
+    NSInteger currentLabelIndex = cachedSchoolLabels.count - 1;
+    while (currentSchoolIndex < maxCacheSize) {
+        CustomInsetLabel *label = cachedSchoolLabels[currentLabelIndex];
+        if (currentSchoolIndex < cachedSchools.count) {
+            label.text = cachedSchools[currentSchoolIndex].schoolName;
+            [label setHidden:false];
+        } else {
+            [label setHidden:true];
+        }
+        currentSchoolIndex++;
+        currentLabelIndex --;
+    }
+}
+
 - (void)styleGradientLayer {
     UIColor *blueColor = [[UIColor alloc] initWithRed:18.0f/255.0f green:117.0f/255.0f blue:187.0f/255.0f alpha:1];
     UIColor *purpleColor = [[UIColor alloc] initWithRed:149.0f/255.0f green:65.0f/255.0f blue:193.0f/255.0f alpha:1];
@@ -200,7 +226,5 @@ const int maxCacheSize = 10;
 
     [self.view.layer insertSublayer:gradientLayer atIndex:0];
 }
-
-
 
 @end
