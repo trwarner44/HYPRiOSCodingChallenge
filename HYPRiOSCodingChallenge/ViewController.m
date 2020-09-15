@@ -8,8 +8,9 @@
 
 #import "ViewController.h"
 #import "CustomInsetTextField.h"
+#import "CustomInsetLabel.h"
 #import "QueryManager.h"
-//#import "QueryManager.m"
+#import "School.h"
 
 @interface ViewController ()
 
@@ -22,10 +23,15 @@ UIStackView *stackView;
 CustomInsetTextField *textField;
 UIButton *button;
 UILabel *currentSchoolTitleLabel;
-UILabel *currentSchoolDescriptionLabel;
+CustomInsetLabel *currentSchoolDescriptionLabel;
+UILabel *cacheTitleLabel;
+NSMutableArray<CustomInsetLabel*> *cachedSchoolLabels;
+UIView *currentSchoolBackgroundView;
+UIView *cacheBackgroundView;
 CAGradientLayer *gradientLayer;
 QueryManager *queryManager;
 const CGFloat spacing = 20;
+const int maxCacheSize = 10;
 
 // MARK: - View Life Cycle
 - (void)viewDidLoad {
@@ -45,10 +51,17 @@ const CGFloat spacing = 20;
     NSString *text = textField.text;
     NSInteger *intId = [text integerValue];
     NSString *dbn = [QueryManager dbnFor:intId];
-    NSLog(@"dbn: %@", dbn);
     
-    [QueryManager fetchSchool:dbn completion:^(NSMutableArray * response) {
-        NSLog(@"response: %@", response);
+    [QueryManager fetchSchool:dbn completion:^(School * school) {
+        NSLog(@"response: %@", school.schoolName);
+        school.schoolId = intId;
+        NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
+        currentSchoolDescriptionLabel.text = labelText;
+        
+        [cachedSchoolLabels.firstObject setHidden: !cachedSchoolLabels.firstObject.isHidden];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.view.layoutIfNeeded;
+        }];
     }];
 }
 
@@ -59,15 +72,29 @@ const CGFloat spacing = 20;
     textField = [[CustomInsetTextField alloc] initWithFrame:CGRectZero];
     button = [[UIButton alloc] initWithFrame:CGRectZero];
     currentSchoolTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    currentSchoolDescriptionLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    NSArray *subviews = @[
-        textField,
-        button,
-        currentSchoolTitleLabel,
-        currentSchoolDescriptionLabel
-    ];
+    currentSchoolDescriptionLabel = [[CustomInsetLabel alloc] initWithFrame:CGRectZero];
+    cacheTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    cachedSchoolLabels = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < maxCacheSize; ++i) {
+        UILabel *label = [[CustomInsetLabel alloc] initWithFrame:CGRectZero];
+        label.text = @"test label";
+        [cachedSchoolLabels addObject:label];
+    }
+    NSMutableArray *subviews = [[NSMutableArray alloc] initWithObjects:
+                                textField,
+                                button,
+                                currentSchoolTitleLabel,
+                                currentSchoolDescriptionLabel,
+                                cacheTitleLabel,
+                                nil];
+    for (UILabel *label in cachedSchoolLabels) {
+        [subviews addObject:label];
+    }
     stackView = [[UIStackView alloc] initWithArrangedSubviews: subviews];
     queryManager = [[QueryManager alloc] init];
+    cacheBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    currentSchoolBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
+    cacheBackgroundView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 // MARK: - Anchor Subviews
@@ -88,8 +115,21 @@ const CGFloat spacing = 20;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.spacing = spacing;
     [stackView setCustomSpacing:spacing/2 afterView:currentSchoolTitleLabel];
+    [stackView setCustomSpacing:spacing/2 afterView:cacheTitleLabel];
     
-
+    [scrollView insertSubview:currentSchoolBackgroundView atIndex:0];
+    currentSchoolBackgroundView.translatesAutoresizingMaskIntoConstraints = false;
+    [currentSchoolBackgroundView.topAnchor constraintEqualToAnchor:currentSchoolDescriptionLabel.topAnchor].active = true;
+    [currentSchoolBackgroundView.leadingAnchor constraintEqualToAnchor:currentSchoolDescriptionLabel.leadingAnchor].active = true;
+    [currentSchoolBackgroundView.trailingAnchor constraintEqualToAnchor:currentSchoolDescriptionLabel.trailingAnchor].active = true;
+    [currentSchoolBackgroundView.bottomAnchor constraintEqualToAnchor:currentSchoolDescriptionLabel.bottomAnchor].active = true;
+    
+    [scrollView insertSubview:cacheBackgroundView atIndex:0];
+    cacheBackgroundView.translatesAutoresizingMaskIntoConstraints = false;
+    [cacheBackgroundView.topAnchor constraintEqualToAnchor:cachedSchoolLabels[0].topAnchor].active = true;
+    [cacheBackgroundView.leadingAnchor constraintEqualToAnchor:cachedSchoolLabels[0].leadingAnchor].active = true;
+    [cacheBackgroundView.trailingAnchor constraintEqualToAnchor:cachedSchoolLabels[0].trailingAnchor].active = true;
+    [cacheBackgroundView.bottomAnchor constraintEqualToAnchor:cachedSchoolLabels[maxCacheSize-1].bottomAnchor].active = true;
 }
 
 // MARK: - StyleSubviews
@@ -97,6 +137,8 @@ const CGFloat spacing = 20;
     [self styleGradientLayer]; //Helper function
     UIColor* darkGrayColor = [[UIColor alloc] initWithWhite:0.2 alpha:1.0];
     self.view.backgroundColor = UIColor.blueColor;
+    UIFont *headerFont = [UIFont boldSystemFontOfSize:22];
+    UIColor *textColor = UIColor.whiteColor;
     
     scrollView.alwaysBounceVertical = true;
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
@@ -104,8 +146,8 @@ const CGFloat spacing = 20;
     textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"School Index" attributes:@{
         NSForegroundColorAttributeName: [[UIColor alloc] initWithWhite:0.5 alpha:1.0]
     }];
-    textField.tintColor = UIColor.whiteColor;
-    textField.textColor = UIColor.whiteColor;
+    textField.tintColor = textColor;
+    textField.textColor = textColor;
     textField.backgroundColor = darkGrayColor;
     textField.keyboardType = UIKeyboardTypeNumberPad;
     textField.layer.cornerRadius = 6;
@@ -119,10 +161,29 @@ const CGFloat spacing = 20;
     button.layer.masksToBounds = true;
     [button addTarget:self action:@selector(handleButton) forControlEvents:UIControlEventTouchUpInside];
     
+    currentSchoolBackgroundView.backgroundColor = darkGrayColor;
+    currentSchoolBackgroundView.layer.cornerRadius = 6;
+    currentSchoolBackgroundView.layer.masksToBounds = true;
+    
+    cacheBackgroundView.backgroundColor = darkGrayColor;
+    cacheBackgroundView.layer.cornerRadius = 6;
+    cacheBackgroundView.layer.masksToBounds = true;
+    
     currentSchoolTitleLabel.text = @"Current School";
+    [currentSchoolTitleLabel setFont:headerFont];
+    currentSchoolTitleLabel.textColor = textColor;
     
     currentSchoolDescriptionLabel.numberOfLines = 0;
     currentSchoolDescriptionLabel.text = @"None";
+    currentSchoolDescriptionLabel.textColor = textColor;
+    
+    cacheTitleLabel.text = @"School Cache";
+    [cacheTitleLabel setFont:headerFont];
+    cacheTitleLabel.textColor = textColor;
+    
+    for (UILabel *label in cachedSchoolLabels) {
+        label.textColor = textColor;
+    }
 }
 
 - (void)styleGradientLayer {

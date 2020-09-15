@@ -7,12 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "School.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface QueryManager : NSObject
 
-+ (void)fetchSchool:(NSString*)dbn completion: (void(^)(NSMutableArray*))callback;
++ (void)fetchSchool:(NSString*)dbn completion: (void(^)(School*))callback;
 +(NSString*)dbnFor:(NSInteger)rowId;
 
 @end

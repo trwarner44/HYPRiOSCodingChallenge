@@ -7,12 +7,13 @@
 //
 
 #import "QueryManager.h"
+#import "School.h"
 
 @implementation QueryManager
 
 NSString *baseUrl = @"https://data.cityofnewyork.us/resource/s3k6-pzi2.json";
 
-+ (void)fetchSchool:(NSString*)dbn completion: (void(^)(NSMutableArray*))callback {
++ (void)fetchSchool:(NSString*)dbn completion: (void(^)(School*))callback {
     NSLog(@"fetching school with dbn: %@", dbn);
     NSString *endpoint = [NSString stringWithFormat:@"%@?dbn=%@", baseUrl, dbn];
     
@@ -22,10 +23,13 @@ NSString *baseUrl = @"https://data.cityofnewyork.us/resource/s3k6-pzi2.json";
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:urlRequest completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
         if(httpResponse.statusCode == 200) {
-            NSError *parseError = nil;
-            NSMutableArray<NSDictionary*> *responseArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
-//            NSLog(@"Response Array: %@", responseArray);
-            callback(responseArray);
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                //Run UI Updates
+                NSError *parseError = nil;
+                NSMutableArray<NSDictionary*> *responseArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parseError];
+                School *school = [[School alloc] init:responseArray[0]];
+                callback(school);
+            });
         } else {
             NSLog(@"Error");
         }
