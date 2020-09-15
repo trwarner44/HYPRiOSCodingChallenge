@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "CustomInsetTextField.h"
 
 @interface ViewController ()
 
@@ -16,19 +17,31 @@
 
 UIScrollView *scrollView;
 UIStackView *stackView;
-UITextField *textField;
+CustomInsetTextField *textField;
 UIButton *button;
+CAGradientLayer *gradientLayer;
 
 // MARK: - View Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
-    textField = [[UITextField alloc] initWithFrame:CGRectZero];
-    stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
-    button = [[UIButton alloc] initWithFrame:CGRectZero];
+    [self initSubviews];
     [self anchorSubviews];
     [self styleSubviews];
 
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    gradientLayer.frame = self.view.frame;
+}
+
+// MARK: - Init Subviews
+- (void)initSubviews {
+    gradientLayer = [CAGradientLayer layer];
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    textField = [[CustomInsetTextField alloc] initWithFrame:CGRectZero];
+    stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
+    button = [[UIButton alloc] initWithFrame:CGRectZero];
 }
 
 // MARK: - Anchor Subviews
@@ -58,20 +71,28 @@ UIButton *button;
 // MARK: - StyleSubviews
 - (void)styleSubviews {
     [self styleGradientLayer]; //Helper function
-    
+    UIColor* darkGrayColor = [[UIColor alloc] initWithWhite:0.2 alpha:1.0];
     self.view.backgroundColor = UIColor.blueColor;
     
     scrollView.alwaysBounceVertical = true;
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
-    textField.placeholder = @"Test";
-    textField.backgroundColor = UIColor.lightGrayColor;
+    textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"School Index" attributes:@{
+        NSForegroundColorAttributeName: [[UIColor alloc] initWithWhite:0.5 alpha:1.0]
+    }];
+    textField.tintColor = UIColor.whiteColor;
+    textField.textColor = UIColor.whiteColor;
+    textField.backgroundColor = darkGrayColor;
     textField.keyboardType = UIKeyboardTypeNumberPad;
+    textField.layer.cornerRadius = 6;
+    textField.layer.masksToBounds = true;
 
     
     [button setTitle: @"Button" forState: UIControlStateNormal];
-    [button setTitleColor:UIColor.brownColor forState:UIControlStateNormal];
-    button.backgroundColor = UIColor.lightGrayColor;
+    [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    button.backgroundColor = darkGrayColor;
+    button.layer.cornerRadius = 6;
+    button.layer.masksToBounds = true;
 }
 
 - (void)styleGradientLayer {
@@ -83,12 +104,10 @@ UIButton *button;
     NSNumber *bottomStop = [NSNumber numberWithFloat:1.0];
 
     NSArray *locations = [NSArray arrayWithObjects: topStop, bottomStop, nil];
-    CAGradientLayer *headerLayer = [CAGradientLayer layer];
-    headerLayer.colors = colors;
-    headerLayer.locations = locations;
+    gradientLayer.colors = colors;
+    gradientLayer.locations = locations;
 
-    headerLayer.frame = self.view.bounds;
-    [self.view.layer insertSublayer:headerLayer atIndex:0];
+    [self.view.layer insertSublayer:gradientLayer atIndex:0];
 }
 
 

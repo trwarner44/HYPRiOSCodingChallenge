@@ -15,6 +15,7 @@
 		447AB9FC2510EA0400FB764B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 447AB9FB2510EA0400FB764B /* Assets.xcassets */; };
 		447AB9FF2510EA0400FB764B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 447AB9FD2510EA0400FB764B /* LaunchScreen.storyboard */; };
 		447ABA022510EA0400FB764B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 447ABA012510EA0400FB764B /* main.m */; };
+		447ABA0A2511027B00FB764B /* CustomInsetTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 447ABA092511027B00FB764B /* CustomInsetTextField.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,8 @@
 		447AB9FE2510EA0400FB764B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		447ABA002510EA0400FB764B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		447ABA012510EA0400FB764B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		447ABA082511027B00FB764B /* CustomInsetTextField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomInsetTextField.h; sourceTree = "<group>"; };
+		447ABA092511027B00FB764B /* CustomInsetTextField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomInsetTextField.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +72,8 @@
 				447AB9F02510EA0300FB764B /* SceneDelegate.m */,
 				447AB9F22510EA0300FB764B /* ViewController.h */,
 				447AB9F32510EA0300FB764B /* ViewController.m */,
+				447ABA082511027B00FB764B /* CustomInsetTextField.h */,
+				447ABA092511027B00FB764B /* CustomInsetTextField.m */,
 				447AB9F52510EA0300FB764B /* Main.storyboard */,
 				447AB9FB2510EA0400FB764B /* Assets.xcassets */,
 				447AB9FD2510EA0400FB764B /* LaunchScreen.storyboard */,
@@ -149,6 +154,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				447ABA0A2511027B00FB764B /* CustomInsetTextField.m in Sources */,
 				447ABA022510EA0400FB764B /* main.m in Sources */,
 				447AB9FA2510EA0300FB764B /* HYPRiOSCodingChallenge.xcdatamodeld in Sources */,
 				447AB9F42510EA0300FB764B /* ViewController.m in Sources */,
