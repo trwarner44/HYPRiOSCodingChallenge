@@ -8,6 +8,8 @@
 
 #import "ViewController.h"
 #import "CustomInsetTextField.h"
+#import "QueryManager.h"
+//#import "QueryManager.m"
 
 @interface ViewController ()
 
@@ -20,6 +22,7 @@ UIStackView *stackView;
 CustomInsetTextField *textField;
 UIButton *button;
 CAGradientLayer *gradientLayer;
+QueryManager *queryManager;
 
 // MARK: - View Life Cycle
 - (void)viewDidLoad {
@@ -35,6 +38,16 @@ CAGradientLayer *gradientLayer;
     gradientLayer.frame = self.view.frame;
 }
 
+// MARK: - Button Handlers
+- (void)handleButton {
+    NSString *text = textField.text;
+    NSInteger *intId = [text integerValue];
+    NSString *dbn = [QueryManager dbnFor:intId];
+    NSLog(@"dbn: %@", dbn);
+    
+    [QueryManager fetchSchool:dbn];
+}
+
 // MARK: - Init Subviews
 - (void)initSubviews {
     gradientLayer = [CAGradientLayer layer];
@@ -42,6 +55,7 @@ CAGradientLayer *gradientLayer;
     textField = [[CustomInsetTextField alloc] initWithFrame:CGRectZero];
     stackView = [[UIStackView alloc] initWithFrame:CGRectZero];
     button = [[UIButton alloc] initWithFrame:CGRectZero];
+    queryManager = [[QueryManager alloc] init];
 }
 
 // MARK: - Anchor Subviews
@@ -93,6 +107,7 @@ CAGradientLayer *gradientLayer;
     button.backgroundColor = darkGrayColor;
     button.layer.cornerRadius = 6;
     button.layer.masksToBounds = true;
+    [button addTarget:self action:@selector(handleButton) forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)styleGradientLayer {
