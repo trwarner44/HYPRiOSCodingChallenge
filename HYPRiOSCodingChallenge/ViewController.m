@@ -20,6 +20,7 @@
 
 UIScrollView *scrollView;
 UIStackView *stackView;
+UILabel *nextSchoolTitleLabel;
 CustomInsetTextField *textField;
 UIButton *button;
 UILabel *currentSchoolTitleLabel;
@@ -53,15 +54,10 @@ NSMutableArray<School*> *cachedSchools;
     NSString *text = textField.text;
     NSInteger intId = [text integerValue];
     NSString *dbn = [QueryManager dbnFor:intId];
-    
-    if (dbn == nil) {
-        UIAlertController* alertVC = [UIAlertController alertControllerWithTitle:@"Too High!"
-                                   message:@"Please input an index lower than 440"
-                                   preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
-                                       handler:^(UIAlertAction * action) {}];
-        [alertVC addAction:okAction];
-        [self presentViewController:alertVC animated:YES completion:nil];
+    if ((intId == 0 && [text isEqualToString:@"0"]==false)) {
+        [self presentErrorAlert];
+    } else if (dbn == nil) {
+        [self presentErrorAlert];
     } else {
         __block NSUInteger cachedSchoolIndex = -1;
         NSUInteger index = 0;
@@ -109,6 +105,7 @@ NSMutableArray<School*> *cachedSchools;
 - (void)initSubviews {
     gradientLayer = [CAGradientLayer layer];
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectZero];
+    nextSchoolTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     textField = [[CustomInsetTextField alloc] initWithFrame:CGRectZero];
     button = [[UIButton alloc] initWithFrame:CGRectZero];
     currentSchoolTitleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -121,6 +118,7 @@ NSMutableArray<School*> *cachedSchools;
         [cachedSchoolLabels addObject:label];
     }
     NSMutableArray *subviews = [[NSMutableArray alloc] initWithObjects:
+                                nextSchoolTitleLabel,
                                 textField,
                                 button,
                                 currentSchoolTitleLabel,
@@ -155,6 +153,7 @@ NSMutableArray<School*> *cachedSchools;
     [stackView.bottomAnchor constraintEqualToAnchor:scrollView.bottomAnchor constant:-spacing*3].active = true;
     stackView.axis = UILayoutConstraintAxisVertical;
     stackView.spacing = spacing;
+    [stackView setCustomSpacing:spacing/2 afterView:nextSchoolTitleLabel];
     [stackView setCustomSpacing:spacing/2 afterView:currentSchoolTitleLabel];
     [stackView setCustomSpacing:spacing/2 afterView:cacheTitleLabel];
     
@@ -185,6 +184,10 @@ NSMutableArray<School*> *cachedSchools;
     scrollView.alwaysBounceVertical = true;
     scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     
+    nextSchoolTitleLabel.font = headerFont;
+    nextSchoolTitleLabel.textColor = textColor;
+    nextSchoolTitleLabel.text = @"Next School";
+    
     textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"School Index" attributes:@{
         NSForegroundColorAttributeName: [[UIColor alloc] initWithWhite:0.5 alpha:1.0]
     }];
@@ -194,6 +197,7 @@ NSMutableArray<School*> *cachedSchools;
     textField.keyboardType = UIKeyboardTypeNumberPad;
     textField.layer.cornerRadius = 6;
     textField.layer.masksToBounds = true;
+    textField.delegate = self;
 
     
     [button setTitle: @"Button" forState: UIControlStateNormal];
@@ -265,6 +269,21 @@ NSMutableArray<School*> *cachedSchools;
     gradientLayer.locations = locations;
 
     [self.view.layer insertSublayer:gradientLayer atIndex:0];
+}
+
+-(void)presentErrorAlert {
+    UIAlertController* alertVC = [UIAlertController alertControllerWithTitle:@"Uh-oh!"
+                               message:@"Please input a number from 0 to 439"
+                               preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {}];
+    [alertVC addAction:okAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self handleButton];
+    return YES;
 }
 
 @end
