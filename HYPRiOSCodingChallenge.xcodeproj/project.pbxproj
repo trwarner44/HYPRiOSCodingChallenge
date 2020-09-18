@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		443178A52513A6EB00665F7C /* HYPRiOSCodingChallengeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 443178A42513A6EB00665F7C /* HYPRiOSCodingChallengeTests.m */; };
+		443178DD2514361000665F7C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 447AB9F32510EA0300FB764B /* ViewController.m */; };
 		447AB9EE2510EA0300FB764B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 447AB9ED2510EA0300FB764B /* AppDelegate.m */; };
 		447AB9F12510EA0300FB764B /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 447AB9F02510EA0300FB764B /* SceneDelegate.m */; };
 		447AB9F42510EA0300FB764B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 447AB9F32510EA0300FB764B /* ViewController.m */; };
@@ -21,7 +23,20 @@
 		447ABA15251144D900FB764B /* CustomInsetLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 447ABA14251144D900FB764B /* CustomInsetLabel.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		443178A72513A6EB00665F7C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 447AB9E12510EA0300FB764B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 447AB9E82510EA0300FB764B;
+			remoteInfo = HYPRiOSCodingChallenge;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		443178A22513A6EB00665F7C /* HYPRiOSCodingChallengeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HYPRiOSCodingChallengeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		443178A42513A6EB00665F7C /* HYPRiOSCodingChallengeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HYPRiOSCodingChallengeTests.m; sourceTree = "<group>"; };
+		443178A62513A6EB00665F7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		447AB9E92510EA0300FB764B /* HYPRiOSCodingChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HYPRiOSCodingChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		447AB9EC2510EA0300FB764B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		447AB9ED2510EA0300FB764B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -46,6 +61,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		4431789F2513A6EB00665F7C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		447AB9E62510EA0300FB764B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -56,10 +78,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		443178A32513A6EB00665F7C /* HYPRiOSCodingChallengeTests */ = {
+			isa = PBXGroup;
+			children = (
+				443178A42513A6EB00665F7C /* HYPRiOSCodingChallengeTests.m */,
+				443178A62513A6EB00665F7C /* Info.plist */,
+			);
+			path = HYPRiOSCodingChallengeTests;
+			sourceTree = "<group>";
+		};
 		447AB9E02510EA0300FB764B = {
 			isa = PBXGroup;
 			children = (
 				447AB9EB2510EA0300FB764B /* HYPRiOSCodingChallenge */,
+				443178A32513A6EB00665F7C /* HYPRiOSCodingChallengeTests */,
 				447AB9EA2510EA0300FB764B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -68,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				447AB9E92510EA0300FB764B /* HYPRiOSCodingChallenge.app */,
+				443178A22513A6EB00665F7C /* HYPRiOSCodingChallengeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,6 +135,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		443178A12513A6EB00665F7C /* HYPRiOSCodingChallengeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 443178AB2513A6EB00665F7C /* Build configuration list for PBXNativeTarget "HYPRiOSCodingChallengeTests" */;
+			buildPhases = (
+				4431789E2513A6EB00665F7C /* Sources */,
+				4431789F2513A6EB00665F7C /* Frameworks */,
+				443178A02513A6EB00665F7C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				443178A82513A6EB00665F7C /* PBXTargetDependency */,
+			);
+			name = HYPRiOSCodingChallengeTests;
+			productName = HYPRiOSCodingChallengeTests;
+			productReference = 443178A22513A6EB00665F7C /* HYPRiOSCodingChallengeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		447AB9E82510EA0300FB764B /* HYPRiOSCodingChallenge */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 447ABA052510EA0400FB764B /* Build configuration list for PBXNativeTarget "HYPRiOSCodingChallenge" */;
@@ -128,6 +179,10 @@
 				LastUpgradeCheck = 1170;
 				ORGANIZATIONNAME = "Thomas Warner";
 				TargetAttributes = {
+					443178A12513A6EB00665F7C = {
+						CreatedOnToolsVersion = 12.0;
+						TestTargetID = 447AB9E82510EA0300FB764B;
+					};
 					447AB9E82510EA0300FB764B = {
 						CreatedOnToolsVersion = 11.7;
 					};
@@ -147,11 +202,19 @@
 			projectRoot = "";
 			targets = (
 				447AB9E82510EA0300FB764B /* HYPRiOSCodingChallenge */,
+				443178A12513A6EB00665F7C /* HYPRiOSCodingChallengeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		443178A02513A6EB00665F7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		447AB9E72510EA0300FB764B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -165,6 +228,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		4431789E2513A6EB00665F7C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				443178DD2514361000665F7C /* ViewController.m in Sources */,
+				443178A52513A6EB00665F7C /* HYPRiOSCodingChallengeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		447AB9E52510EA0300FB764B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -182,6 +254,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		443178A82513A6EB00665F7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 447AB9E82510EA0300FB764B /* HYPRiOSCodingChallenge */;
+			targetProxy = 443178A72513A6EB00665F7C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		447AB9F52510EA0300FB764B /* Main.storyboard */ = {
@@ -203,6 +283,48 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		443178A92513A6EB00665F7C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7SL9WGZAMS;
+				INFOPLIST_FILE = HYPRiOSCodingChallengeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = WarnerDesignTechnology.HYPRiOSCodingChallengeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HYPRiOSCodingChallenge.app/HYPRiOSCodingChallenge";
+			};
+			name = Debug;
+		};
+		443178AA2513A6EB00665F7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7SL9WGZAMS;
+				INFOPLIST_FILE = HYPRiOSCodingChallengeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = WarnerDesignTechnology.HYPRiOSCodingChallengeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HYPRiOSCodingChallenge.app/HYPRiOSCodingChallenge";
+			};
+			name = Release;
+		};
 		447ABA032510EA0400FB764B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -350,6 +472,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		443178AB2513A6EB00665F7C /* Build configuration list for PBXNativeTarget "HYPRiOSCodingChallengeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				443178A92513A6EB00665F7C /* Debug */,
+				443178AA2513A6EB00665F7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		447AB9E42510EA0300FB764B /* Build configuration list for PBXProject "HYPRiOSCodingChallenge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

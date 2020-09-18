@@ -50,13 +50,21 @@ NSMutableArray<School*> *cachedSchools;
 
 // MARK: - Button Handlers
 - (void)handleButton {
-    
     NSString *text = textField.text;
+    [self handleSchool:text completion:^(School *school) {
+        //update UI
+    }];
+
+}
+
+-(void)handleSchool:(NSString*)text completion: (void(^)(School*))callback {
     NSInteger intId = [text integerValue];
     NSString *dbn = [QueryManager dbnFor:intId];
     if ((intId == 0 && [text isEqualToString:@"0"]==false)) {
+        NSLog(@"text is a string %@", text);
         [self presentErrorAlert];
     } else if (dbn == nil) {
+        NSLog(@"text is out of dbn range");
         [self presentErrorAlert];
     } else {
         __block NSUInteger cachedSchoolIndex = -1;
@@ -69,7 +77,7 @@ NSMutableArray<School*> *cachedSchools;
             index++;
         }
         if (cachedSchoolIndex == -1) {
-            NSLog(@"Fetching school");
+            NSLog(@"Fetching school with id: %d, cache size before fetch: %d", intId, cachedSchools.count);
             [QueryManager fetchSchool:dbn completion:^(School* school) {
                 school.schoolId = intId;
                 NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
@@ -79,6 +87,7 @@ NSMutableArray<School*> *cachedSchools;
                     NSLog(@"dropping %@ from the cache", cachedSchools[0].schoolName);
                     [cachedSchools removeObjectAtIndex:0];
                 }
+                callback(school);
                 [self showOrHideCachLabels];
                 [UIView animateWithDuration:0.3 animations:^{
                     [self.view layoutIfNeeded];
@@ -90,15 +99,12 @@ NSMutableArray<School*> *cachedSchools;
             [cachedSchools removeObjectAtIndex:cachedSchoolIndex];
             [cachedSchools addObject:school];
             [self showOrHideCachLabels];
+            callback(school);
             [UIView animateWithDuration:0.3 animations:^{
                 [self.view layoutIfNeeded];
             }];
         }
- 
-        
-
     }
-
 }
 
 // MARK: - Init Subviews
@@ -176,7 +182,8 @@ NSMutableArray<School*> *cachedSchools;
 // MARK: - StyleSubviews
 - (void)styleSubviews {
     [self styleGradientLayer]; //Helper function
-    UIColor* darkGrayColor = [[UIColor alloc] initWithWhite:0.2 alpha:1.0];
+//    UIColor* darkGrayColor = [[UIColor alloc] initWithWhite:0.2 alpha:1.0];
+    UIColor *darkGrayColor = [[UIColor alloc] initWithRed:4.0/255.0 green:15.0/255.0 blue:56.0/255.0 alpha:1];
     self.view.backgroundColor = UIColor.blueColor;
     UIFont *headerFont = [UIFont boldSystemFontOfSize:22];
     UIColor *textColor = UIColor.whiteColor;
