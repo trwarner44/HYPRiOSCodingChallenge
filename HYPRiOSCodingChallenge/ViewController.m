@@ -77,7 +77,7 @@ NSMutableArray<School*> *cachedSchools;
             index++;
         }
         if (cachedSchoolIndex == -1) {
-            NSLog(@"Fetching school with id: %d, cache size before fetch: %d", intId, cachedSchools.count);
+            NSLog(@"Fetching school with id: %ld, cache size before fetch: %lu", (long)intId, (unsigned long)cachedSchools.count);
             [QueryManager fetchSchool:dbn completion:^(School* school) {
                 school.schoolId = intId;
                 NSString *labelText = [NSString stringWithFormat: @"School Name: %@\ndbn: %@\nid: %d", school.schoolName, school.dbn, school.schoolId];
@@ -207,7 +207,7 @@ NSMutableArray<School*> *cachedSchools;
     textField.delegate = self;
 
     
-    [button setTitle: @"Button" forState: UIControlStateNormal];
+    [button setTitle: @"Load School" forState: UIControlStateNormal];
     [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
     button.backgroundColor = darkGrayColor;
     button.layer.cornerRadius = 6;
