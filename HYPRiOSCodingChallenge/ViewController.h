@@ -16,6 +16,7 @@
 @property (weak, nonatomic) UILabel *currentSchoolTitleLabel;
 
 -(void)handleSchool:(NSString*)text completion: (void(^)(School*))callback;
+- (void)handleButton;
 
 @end
 

@@ -23,7 +23,7 @@ NSMutableArray *finishedExpectations;
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
-    _vc = [[ViewController alloc] init];
+    _vc = UIApplication.sharedApplication.keyWindow.rootViewController;
 }
 
 - (void)tearDown {
@@ -33,6 +33,7 @@ NSMutableArray *finishedExpectations;
 
 - (void)testCacheSize {
     testIds = @[@22, @21, @7, @22, @22, @22, @7, @8, @9, @10, @11, @12, @33, @22, @2];
+    _vc.textField.text = @"56";
     [self fetchNextSchool];
 }
 
@@ -41,6 +42,8 @@ NSMutableArray *finishedExpectations;
     NSString *description = [NSString stringWithFormat:@"%d", fetchSchoolIndex];
     XCTestExpectation *expectation = [self expectationWithDescription:description];
     [expectations addObject:expectation];
+    _vc.textField.text = testIds[fetchSchoolIndex];
+    
     [_vc handleSchool:testIds[fetchSchoolIndex] completion:^(School *school) {
         expectation.fulfill;
     }];
